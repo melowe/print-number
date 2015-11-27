@@ -1,16 +1,8 @@
 package com.github.melowe.print.number;
-
+/*
+For service loader's benefit.
+*/
 public class DefaultNumberPrinter implements NumberPrinter {
-
     public DefaultNumberPrinter() {
     }
-
-    @Override
-    public String print(int num) {
-        Result result = Result.fromNumber(num);
-        return ResultPrinter.print(result);
-    }
-
-  
-
 }
