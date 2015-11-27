@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class ResultPrinter {
+class ResultFormatter {
 
     private enum DoubleDigit {
 
@@ -25,7 +25,7 @@ class ResultPrinter {
             .map(Enum::name)
             .collect(Collectors.toList());
 
-    protected static String print(Result result) {
+    protected static String format(Result result) {
 
         if(result.isZero()) {
             return SingleDigit.ZERO.name();
