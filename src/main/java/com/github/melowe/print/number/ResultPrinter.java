@@ -2,10 +2,21 @@ package com.github.melowe.print.number;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ResultPrinter {
+class ResultPrinter {
+
+    private enum DoubleDigit {
+
+        TEN, ELEVEN, TWELVE, THIREEN, FOURTEEN, FIFTEEN, SIXTEEN, SEVENTEEN, EIGHTEEN, NINETEEN;
+    }
+
+    private enum SingleDigit {
+
+        ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE;
+    }
 
     private static final List<String> ZERO_TO_NINETEEN = Stream.concat(
             Stream.of(SingleDigit.values()),
@@ -14,8 +25,12 @@ public class ResultPrinter {
             .map(Enum::name)
             .collect(Collectors.toList());
 
-    public static String print(Result result) {
+    protected static String print(Result result) {
 
+        if(result.isZero()) {
+            return SingleDigit.ZERO.name();
+        }
+        
         List<String> tokens = new ArrayList<>();
 
         if (result.hasMillions()) {
@@ -29,11 +44,11 @@ public class ResultPrinter {
         }
 
         int t = result.getHundreds() * 100 + result.getFirstTwoDigits();
-        
-        if(!result.hasHundreds() && !tokens.isEmpty()) {
+
+        if (!result.hasHundreds() && !tokens.isEmpty()) {
             tokens.add("AND");
         }
-        
+
         tokens.add(format(t));
 
         return String.join(" ", tokens);

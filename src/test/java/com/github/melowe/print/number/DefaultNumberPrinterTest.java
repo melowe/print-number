@@ -1,10 +1,8 @@
 package com.github.melowe.print.number;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Assertions.*;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DefaultNumberPrinterTest {
@@ -14,13 +12,7 @@ public class DefaultNumberPrinterTest {
     public DefaultNumberPrinterTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
 
-    @AfterClass
-    public static void tearDownClass() {
-    }
 
     @Before
     public void setUp() {
@@ -29,6 +21,7 @@ public class DefaultNumberPrinterTest {
 
     @After
     public void tearDown() {
+        instance = null;
     }
 
     @Test
@@ -80,8 +73,6 @@ public class DefaultNumberPrinterTest {
                 .isEqualToIgnoringCase("ninety nine");
 
     }
-   //
-   // 56945781
     
     @Test
     public void print56945781() {

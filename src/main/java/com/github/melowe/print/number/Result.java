@@ -10,7 +10,7 @@ public class Result {
 
     private final int firstTwoDigits;
 
-    public Result(int millions, int thousands, int hundreds, int firstTwoDigits) {
+    private Result(int millions, int thousands, int hundreds, int firstTwoDigits) {
         this.millions = millions;
         this.thousands = thousands;
         this.hundreds = hundreds;
@@ -33,24 +33,55 @@ public class Result {
         return firstTwoDigits;
     }
 
-    
     public boolean hasThousands() {
         return thousands != 0;
     }
-    
+
     public boolean hasFirstTwoDigits() {
         return firstTwoDigits != 0;
-    } 
-    
+    }
+
     public boolean hasHundreds() {
         return hundreds != 0;
     }
-    
+
     public boolean hasMillions() {
         return millions != 0;
     }
+
+    public boolean isZero() {
+        return (firstTwoDigits + hundreds + thousands + millions) == 0;
+    }
     
-    public static class Builder {
+    @Override
+    public String toString() {
+        return "Result{" + "millions=" + millions + ", thousands=" + thousands + ", hundreds=" + hundreds + ", firstTwoDigits=" + firstTwoDigits + '}';
+    }
+
+    protected static Result fromNumber(int number) {
+        
+        if(Math.signum(number) < 0) {
+            throw new IllegalArgumentException("Negative values aren't supported : "+ number);
+        }
+                
+        //PadAndParse
+        String value = String.format("%012d", number);
+        int first = Integer.parseInt(value.substring(10, 12));
+        int hundreds = Character.getNumericValue(value.charAt(9));
+        int thousands = Integer.parseInt(value.substring(6, 9));
+        int millions = Integer.parseInt(value.substring(0, 6));
+
+        Result result = Result.Builder.create()
+                .hundreds(hundreds)
+                .millions(millions)
+                .thousands(thousands)
+                .firstTwoDigits(first)
+                .build();
+        return result;
+
+    }
+
+    protected static class Builder {
 
         private int millions;
 
@@ -63,7 +94,7 @@ public class Result {
         private Builder() {
         }
 
-        public static Builder create() {
+        protected static Builder create() {
             return new Builder();
         }
 
@@ -86,7 +117,7 @@ public class Result {
             this.firstTwoDigits = firstTwoDigits;
             return this;
         }
-        
+
         public Result build() {
             return new Result(millions, thousands, hundreds, firstTwoDigits);
         }
