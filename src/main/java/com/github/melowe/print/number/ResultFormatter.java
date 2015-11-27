@@ -8,6 +8,11 @@ import java.util.stream.Stream;
 
 class ResultFormatter {
 
+    private enum Tens {
+
+        NONE, TEN, TWENTY, THIRTY, FORTY, FIFTY, SIXTY, SEVENTY, EIGHTY, NINETY;
+    }
+
     private enum DoubleDigit {
 
         TEN, ELEVEN, TWELVE, THIREEN, FOURTEEN, FIFTEEN, SIXTEEN, SEVENTEEN, EIGHTEEN, NINETEEN;
@@ -27,10 +32,10 @@ class ResultFormatter {
 
     protected static String format(Result result) {
 
-        if(result.isZero()) {
+        if (result.isZero()) {
             return SingleDigit.ZERO.name();
         }
-        
+
         List<String> tokens = new ArrayList<>();
 
         if (result.hasMillions()) {
