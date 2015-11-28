@@ -41,7 +41,12 @@ class ResultFormatter {
         }
 
         List<String> tokens = new ArrayList<>();
-
+        
+        if(result.hasTrillions()) {
+            tokens.add(format(result.getTrillions()));
+            tokens.add("TRILLION");
+        }
+        
         if(result.hasBillions()) {
             tokens.add(format(result.getBillions()));
             tokens.add("BILLION");

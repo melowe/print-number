@@ -214,10 +214,19 @@ public class NumberPrinterTest {
                 .isEqualToIgnoringCase("two billion one hundred and forty seven million four hundred and eighty three thousand six hundred and forty seven");
 
     }
+    @Test
     public void printBigIntegerOneThousandBillion() {
+ 
         assertThat(instance.printBigInteger(new BigInteger("1000000000000")))
-                .isEqualToIgnoringCase("one thousand billion");
+                .isEqualToIgnoringCase("one trillion");
 
     }
     
+    @Test
+    public void printBigIntegerOneThousandTrillion() {
+        BigInteger billion = new BigInteger("1000000000000");
+        assertThat(instance.printBigInteger(billion.multiply(new BigInteger("1000"))))
+                .isEqualToIgnoringCase("one thousand trillion");
+
+    }
 }

@@ -14,12 +14,19 @@ public class Result {
 
     private final int firstTwoDigits;
 
-    private Result(int billions, int millions, int thousands, int hundreds, int firstTwoDigits) {
+     private final int trillions;
+    
+    private Result(int trillions,int billions, int millions, int thousands, int hundreds, int firstTwoDigits) {
         this.millions = millions;
         this.thousands = thousands;
         this.hundreds = hundreds;
         this.firstTwoDigits = firstTwoDigits;
         this.billions = billions;
+        this.trillions = trillions;
+    }
+
+    public int getTrillions() {
+        return trillions;
     }
 
     public int getBillions() {
@@ -61,9 +68,11 @@ public class Result {
     public boolean hasBillions() {
         return billions != 0;
     }
-
+    public boolean hasTrillions() {
+        return trillions != 0;
+    }
     public boolean isZero() {
-        return (firstTwoDigits + hundreds + thousands + millions + billions) == 0;
+        return (firstTwoDigits + hundreds + thousands + millions + billions + trillions) == 0;
     }
 
     @Override
@@ -73,14 +82,28 @@ public class Result {
 
     protected static Result fromNumber(BigInteger number) {
         //PadAndParse
-        String value = String.format("%012d", number);
-        int first = Integer.parseInt(value.substring(10, 12));
-        int hundreds = Character.getNumericValue(value.charAt(9));
-        int thousands = Integer.parseInt(value.substring(6, 9));
-        int millions = Integer.parseInt(value.substring(3, 6));
-        int billions = Integer.parseInt(value.substring(0, 3));
-
+        
+        int numberLength =  number.toString().length() > 13 ?  number.toString().length()  : 13;
+        
+        String value = String.format("%0"+ numberLength +"d", number);
+        
+        int first = Integer.parseInt(value.substring(numberLength - 2, numberLength));
+        
+        int hundreds = Character.getNumericValue(value.charAt(numberLength - 3));
+        
+        int thousands = Integer.parseInt(value.substring(numberLength - 6, numberLength - 3));
+        
+        
+        int millions = Integer.parseInt(value.substring(numberLength - 9, numberLength - 6));
+        
+        
+        int billions = Integer.parseInt(value.substring(numberLength - 12, numberLength - 9));
+        
+        
+        int trillions = numberLength < 12 ? 0 : Integer.parseInt(value.substring(0,numberLength - 12));
+        
         Result result = Result.Builder.create()
+                .trillions(trillions)
                 .hundreds(hundreds)
                 .millions(millions)
                 .thousands(thousands)
@@ -112,11 +135,17 @@ public class Result {
         
         private int billions;
 
+        private int trillions;
+        
         private Builder() {
         }
 
         protected static Builder create() {
             return new Builder();
+        }
+        public Builder trillions(int trillions) {
+            this.trillions = trillions;
+            return this;
         }
 
         public Builder millions(int millions) {
@@ -140,7 +169,8 @@ public class Result {
         }
 
         public Result build() {
-            return new Result(billions, millions, thousands, hundreds, firstTwoDigits);
+
+            return new Result(trillions,billions, millions, thousands, hundreds, firstTwoDigits);
         }
 
         public Builder billions(int billions) {

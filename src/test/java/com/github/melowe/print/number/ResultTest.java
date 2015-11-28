@@ -1,5 +1,6 @@
 package com.github.melowe.print.number;
 
+import java.math.BigInteger;
 import static org.fest.assertions.Assertions.assertThat;
 import org.junit.Test;
 
@@ -7,7 +8,6 @@ public class ResultTest {
 
     public ResultTest() {
     }
-
 
     @Test
     public void createValidAllPowers() throws Exception {
@@ -39,13 +39,34 @@ public class ResultTest {
         Result result = Result.Builder.create().build();
 
         assertThat(result.hasBillions()).isFalse();
-         assertThat(result.getBillions()).isEqualTo(0);
+        assertThat(result.getBillions()).isEqualTo(0);
         assertThat(result.getFirstTwoDigits()).isEqualTo(0);
         assertThat(result.getMillions()).isEqualTo(0);
         assertThat(result.getThousands()).isEqualTo(0);
         assertThat(result.getHundreds()).isEqualTo(0);
         assertThat(result.isZero()).isTrue();
     }
+
+    @Test
+    public void createOnlyTrillions() throws Exception {
+
+        Result result = Result.Builder.create()
+                .trillions(3).build();
+
+        assertThat(result.getTrillions()).isEqualTo(3);
+        assertThat(result.getBillions()).isEqualTo(0);
+        assertThat(result.getThousands()).isEqualTo(0);
+        assertThat(result.getHundreds()).isEqualTo(0);
+        assertThat(result.getMillions()).isEqualTo(0);
+        assertThat(result.hasTrillions()).isTrue();
+        assertThat(result.hasBillions()).isFalse();
+        assertThat(result.hasMillions()).isFalse();
+        assertThat(result.hasFirstTwoDigits()).isFalse();
+        assertThat(result.hasThousands()).isFalse();
+        assertThat(result.hasHundreds()).isFalse();
+        assertThat(result.isZero()).isFalse();
+    }
+
     @Test
     public void createOnlyBillions() throws Exception {
 
@@ -57,13 +78,14 @@ public class ResultTest {
         assertThat(result.getThousands()).isEqualTo(0);
         assertThat(result.getHundreds()).isEqualTo(0);
         assertThat(result.getMillions()).isEqualTo(0);
-         assertThat(result.hasBillions()).isTrue();
+        assertThat(result.hasBillions()).isTrue();
         assertThat(result.hasMillions()).isFalse();
         assertThat(result.hasFirstTwoDigits()).isFalse();
         assertThat(result.hasThousands()).isFalse();
         assertThat(result.hasHundreds()).isFalse();
         assertThat(result.isZero()).isFalse();
     }
+
     @Test
     public void createOnlyMillions() throws Exception {
 
@@ -79,11 +101,11 @@ public class ResultTest {
         assertThat(result.hasHundreds()).isFalse();
         assertThat(result.isZero()).isFalse();
     }
-    
+
     @Test
     public void fromNumberFactoryMethod() throws Exception {
         Result result = Result.fromNumber(56945781);
-        
+
         assertThat(result.getMillions()).isEqualTo(56);
         assertThat(result.getThousands()).isEqualTo(945);
         assertThat(result.getHundreds()).isEqualTo(7);
@@ -94,21 +116,20 @@ public class ResultTest {
         assertThat(result.hasThousands()).isTrue();
         assertThat(result.hasHundreds()).isTrue();
         assertThat(result.isZero()).isFalse();
-        
 
     }
-    
+
     @Test
     public void fromNumberFactoryMethodZero() throws Exception {
         Result result = Result.fromNumber(0);
-        
+
         assertThat(result.isZero()).isTrue();
-        
+
         assertThat(result.getMillions()).isEqualTo(0);
         assertThat(result.getThousands()).isEqualTo(0);
         assertThat(result.getHundreds()).isEqualTo(0);
         assertThat(result.getFirstTwoDigits()).isEqualTo(0);
-        
+
         assertThat(result.hasBillions()).isFalse();
         assertThat(result.hasMillions()).isFalse();
         assertThat(result.hasFirstTwoDigits()).isFalse();
@@ -116,18 +137,15 @@ public class ResultTest {
         assertThat(result.hasHundreds()).isFalse();
 
     }
-    
 
-    
     @Test
     public void fromNumberFactoryMethodMax() throws Exception {
         Result result = Result.fromNumber(Integer.MAX_VALUE);
-        
-        assertThat(result.getBillions()).isEqualTo(2);
-        assertThat(result.getMillions()).isEqualTo(147);
-        assertThat(result.getThousands()).isEqualTo(483);
         assertThat(result.getHundreds()).isEqualTo(6);
         assertThat(result.getFirstTwoDigits()).isEqualTo(47);
+        assertThat(result.getThousands()).isEqualTo(483);
+        assertThat(result.getMillions()).isEqualTo(147);
+        assertThat(result.getBillions()).isEqualTo(2);
 
         assertThat(result.hasBillions()).isTrue();
         assertThat(result.hasMillions()).isTrue();
@@ -135,13 +153,33 @@ public class ResultTest {
         assertThat(result.hasThousands()).isTrue();
         assertThat(result.hasHundreds()).isTrue();
         assertThat(result.isZero()).isFalse();
-        
 
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void somePunkTryingToProvideANegativeValue() throws Exception {
         Result.fromNumber(-1);
-    } 
-    
+    }
+
+    @Test
+    public void fromNumberFactoryMethodTen() throws Exception {
+        Result result = Result.fromNumber(10);
+
+        assertThat(result.getFirstTwoDigits()).isEqualTo(10);
+
+    }
+
+    @Test
+    public void fromNumberFactoryMethodBigIntegerOneThousandTrillion() {
+        BigInteger billion = new BigInteger("1000000000000");
+
+        Result result = Result.fromNumber(billion.multiply(new BigInteger("1000")));
+
+        assertThat(result.getTrillions()).isEqualTo(1000);
+        assertThat(result.getHundreds()).isEqualTo(0);
+        assertThat(result.getFirstTwoDigits()).isEqualTo(0);
+        assertThat(result.getThousands()).isEqualTo(0);
+        assertThat(result.getMillions()).isEqualTo(0);
+        assertThat(result.getBillions()).isEqualTo(0);
+    }
 }
