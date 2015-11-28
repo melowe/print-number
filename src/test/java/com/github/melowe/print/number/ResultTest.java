@@ -99,20 +99,41 @@ public class ResultTest {
     }
     
     @Test
-    public void fromNumberFactoryMethodBillion() throws Exception {
-        Result result = Result.fromNumber(1000000000);
+    public void fromNumberFactoryMethodZero() throws Exception {
+        Result result = Result.fromNumber(0);
         
-        assertThat(result.getBillions()).isEqualTo(1);
+        assertThat(result.isZero()).isTrue();
+        
         assertThat(result.getMillions()).isEqualTo(0);
         assertThat(result.getThousands()).isEqualTo(0);
         assertThat(result.getHundreds()).isEqualTo(0);
         assertThat(result.getFirstTwoDigits()).isEqualTo(0);
-
-        assertThat(result.hasBillions()).isTrue();
+        
+        assertThat(result.hasBillions()).isFalse();
         assertThat(result.hasMillions()).isFalse();
         assertThat(result.hasFirstTwoDigits()).isFalse();
         assertThat(result.hasThousands()).isFalse();
         assertThat(result.hasHundreds()).isFalse();
+
+    }
+    
+
+    
+    @Test
+    public void fromNumberFactoryMethodMax() throws Exception {
+        Result result = Result.fromNumber(Integer.MAX_VALUE);
+        
+        assertThat(result.getBillions()).isEqualTo(2);
+        assertThat(result.getMillions()).isEqualTo(147);
+        assertThat(result.getThousands()).isEqualTo(483);
+        assertThat(result.getHundreds()).isEqualTo(6);
+        assertThat(result.getFirstTwoDigits()).isEqualTo(47);
+
+        assertThat(result.hasBillions()).isTrue();
+        assertThat(result.hasMillions()).isTrue();
+        assertThat(result.hasFirstTwoDigits()).isTrue();
+        assertThat(result.hasThousands()).isTrue();
+        assertThat(result.hasHundreds()).isTrue();
         assertThat(result.isZero()).isFalse();
         
 

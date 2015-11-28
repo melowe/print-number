@@ -66,8 +66,10 @@ public class Result {
 
     @Override
     public String toString() {
-        return "Result{" + "millions=" + millions + ", thousands=" + thousands + ", hundreds=" + hundreds + ", firstTwoDigits=" + firstTwoDigits + '}';
+        return "Result{" + "billions=" + billions + ", millions=" + millions + ", thousands=" + thousands + ", hundreds=" + hundreds + ", firstTwoDigits=" + firstTwoDigits + '}';
     }
+
+
 
     protected static Result fromNumber(int number) {
 

@@ -198,5 +198,19 @@ public class NumberPrinterTest {
                 .isEqualToIgnoringCase("one billion and three");
 
     }
+    
+    @Test
+    public void printOneBillionNineMillion() {
+        assertThat(instance.print(1009000000))
+                .isEqualToIgnoringCase("one billion nine million");
 
+    }
+    
+
+    @Test
+    public void printMaxValue() {
+        assertThat(instance.print(Integer.MAX_VALUE))
+                .isEqualToIgnoringCase("two billion one hundred and forty seven million four hundred and eighty three thousand six hundred and forty seven");
+
+    }
 }
