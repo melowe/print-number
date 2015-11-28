@@ -1,5 +1,7 @@
 package com.github.melowe.print.number;
 
+import java.math.BigInteger;
+
 public class Result {
 
     private final int billions;
@@ -69,14 +71,7 @@ public class Result {
         return "Result{" + "billions=" + billions + ", millions=" + millions + ", thousands=" + thousands + ", hundreds=" + hundreds + ", firstTwoDigits=" + firstTwoDigits + '}';
     }
 
-
-
-    protected static Result fromNumber(int number) {
-
-        if (Math.signum(number) < 0) {
-            throw new IllegalArgumentException("Negative values aren't supported : " + number);
-        }
-
+    protected static Result fromNumber(BigInteger number) {
         //PadAndParse
         String value = String.format("%012d", number);
         int first = Integer.parseInt(value.substring(10, 12));
@@ -92,7 +87,16 @@ public class Result {
                 .billions(billions)
                 .firstTwoDigits(first)
                 .build();
+        
         return result;
+    }
+
+    protected static Result fromNumber(int number) {
+
+        if (Math.signum(number) < 0) {
+            throw new IllegalArgumentException("Negative values aren't supported : " + number);
+        }
+        return fromNumber(BigInteger.valueOf(number));
 
     }
 
@@ -105,6 +109,7 @@ public class Result {
         private int hundreds;
 
         private int firstTwoDigits;
+        
         private int billions;
 
         private Builder() {

@@ -1,5 +1,6 @@
 package com.github.melowe.print.number;
 
+import java.math.BigInteger;
 import static org.fest.assertions.Assertions.*;
 import org.junit.After;
 import org.junit.Before;
@@ -213,4 +214,10 @@ public class NumberPrinterTest {
                 .isEqualToIgnoringCase("two billion one hundred and forty seven million four hundred and eighty three thousand six hundred and forty seven");
 
     }
+    public void printBigIntegerOneThousandBillion() {
+        assertThat(instance.printBigInteger(new BigInteger("1000000000000")))
+                .isEqualToIgnoringCase("one thousand billion");
+
+    }
+    
 }
