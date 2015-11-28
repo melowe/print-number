@@ -72,12 +72,13 @@ public enum Scale {
 
     protected static Map<Scale, Integer> toScaleMap(BigInteger number) {
 
-        int numberLength = 200;
+        //Highest big number allowing for hundreds if it
+        int numberLength = NOVEMTRIGINTILLION.getValue() + 3;
         if (number.toString().length() > numberLength) {
-            throw new UnsupportedOperationException("Scale exceeds 200 " + number);
+            throw new UnsupportedOperationException("Scale exceeds "+ numberLength +" " + number);
         }
 
-        String value = String.format("%0200d", number);
+        String value = String.format("%0"+ numberLength +"d", number);
 
         int first = Character.getNumericValue(value.charAt(numberLength - 1));
         int tens = Character.getNumericValue(value.charAt(numberLength - 2));
