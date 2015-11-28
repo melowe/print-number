@@ -41,7 +41,13 @@ public class NumberPrinterTest {
         assertThat(instance.print(15))
                 .isEqualToIgnoringCase("fifteen");
     }
-
+    
+    @Test
+    public void print920() {
+        assertThat(instance.print(920))
+                .isEqualToIgnoringCase("nine hundred and twenty");
+    }
+    
     @Test
     public void printOne() {
 

@@ -85,8 +85,9 @@ class ResultFormatter {
                 tokens.add(Tens.values()[t].name());
 
                 int i = Character.getNumericValue(str.charAt(2));
-                tokens.add(SingleDigit.values()[i].name());
-
+                if(i != 0) {
+                    tokens.add(SingleDigit.values()[i].name());
+                }
             }
         }
 
