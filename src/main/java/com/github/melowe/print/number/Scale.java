@@ -70,33 +70,38 @@ public enum Scale {
         return toScaleMap(BigInteger.valueOf(number));
     }
 
+    private static final int MAX_NUMBER_LENGTH = NOVEMTRIGINTILLION.getValue() + 3;
+    
+    private static final String FORMAT = "%0"+ MAX_NUMBER_LENGTH +"d";
+    
     protected static Map<Scale, Integer> toScaleMap(BigInteger number) {
 
         //Highest big number allowing for hundreds if it
-        int numberLength = NOVEMTRIGINTILLION.getValue() + 3;
+        final int numberLength = MAX_NUMBER_LENGTH;
         if (number.toString().length() > numberLength) {
             throw new UnsupportedOperationException("Scale exceeds "+ numberLength +" " + number);
         }
 
-        String value = String.format("%0"+ numberLength +"d", number);
+        final String value = String.format(FORMAT, number);
 
-        int first = Character.getNumericValue(value.charAt(numberLength - 1));
-        int tens = Character.getNumericValue(value.charAt(numberLength - 2));
-        int hundreds = Character.getNumericValue(value.charAt(numberLength - 3));
+        final int first = Character.getNumericValue(value.charAt(numberLength - 1));
+        final int tens = Character.getNumericValue(value.charAt(numberLength - 2));
+        final int hundreds = Character.getNumericValue(value.charAt(numberLength - 3));
 
-        Map<Scale, Integer> multiples = new EnumMap<>(Scale.class);
+        final Map<Scale, Integer> multiples = new EnumMap<>(Scale.class);
 
         multiples.put(Scale.ONE, first);
         multiples.put(Scale.TENS, tens);
         multiples.put(Scale.HUNDRED, hundreds);
 
         Stream.of(Scale.values())
-                .filter(s -> !multiples.containsKey(s))
+                .filter(s -> s.ordinal() > HUNDRED.ordinal())
                 .forEach(s -> {
                     int fromIndex = numberLength - (s.getValue() + 3);
                     int toIndex = numberLength - s.getValue();
                     multiples.put(s, Integer.parseInt(value.substring(fromIndex, toIndex)));
                 });
+
 
         return Collections.unmodifiableMap(multiples);
 
