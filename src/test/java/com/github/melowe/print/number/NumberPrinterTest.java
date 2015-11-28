@@ -175,16 +175,28 @@ public class NumberPrinterTest {
     @Test
     public void print1999999999() {
         assertThat(instance.print(1999999999))
-                .isEqualToIgnoringCase("one hundred and ninety nine million nine hundred and ninety nine thousand nine hundred and ninety nine");
+                .isEqualToIgnoringCase("one billion nine hundred and ninety nine million nine hundred and ninety nine thousand nine hundred and ninety nine");
 
     }
     @Test
     public void print1999999900() {
         assertThat(instance.print(1999999900))
-                .isEqualToIgnoringCase("one hundred and ninety nine million nine hundred and ninety nine thousand nine hundred");
+                .isEqualToIgnoringCase("one billion nine hundred and ninety nine million nine hundred and ninety nine thousand nine hundred");
 
     }
 
+    @Test
+    public void printOneBillion() {
+        assertThat(instance.print(1000000000))
+                .isEqualToIgnoringCase("one billion");
+
+    }
     
+        @Test
+    public void printOneBillionAndThree() {
+        assertThat(instance.print(1000000003))
+                .isEqualToIgnoringCase("one billion and three");
+
+    }
 
 }

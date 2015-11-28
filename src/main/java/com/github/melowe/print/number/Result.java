@@ -2,6 +2,8 @@ package com.github.melowe.print.number;
 
 public class Result {
 
+    private final int billions;
+
     private final int millions;
 
     private final int thousands;
@@ -10,11 +12,16 @@ public class Result {
 
     private final int firstTwoDigits;
 
-    private Result(int millions, int thousands, int hundreds, int firstTwoDigits) {
+    private Result(int billions, int millions, int thousands, int hundreds, int firstTwoDigits) {
         this.millions = millions;
         this.thousands = thousands;
         this.hundreds = hundreds;
         this.firstTwoDigits = firstTwoDigits;
+        this.billions = billions;
+    }
+
+    public int getBillions() {
+        return billions;
     }
 
     public int getMillions() {
@@ -49,34 +56,38 @@ public class Result {
         return millions != 0;
     }
 
-    public boolean isZero() {
-        return (firstTwoDigits + hundreds + thousands + millions) == 0;
+    public boolean hasBillions() {
+        return billions != 0;
     }
-    
+
+    public boolean isZero() {
+        return (firstTwoDigits + hundreds + thousands + millions + billions) == 0;
+    }
+
     @Override
     public String toString() {
         return "Result{" + "millions=" + millions + ", thousands=" + thousands + ", hundreds=" + hundreds + ", firstTwoDigits=" + firstTwoDigits + '}';
     }
 
     protected static Result fromNumber(int number) {
-        
-        if(Math.signum(number) < 0) {
-            throw new IllegalArgumentException("Negative values aren't supported : "+ number);
+
+        if (Math.signum(number) < 0) {
+            throw new IllegalArgumentException("Negative values aren't supported : " + number);
         }
-                
+
         //PadAndParse
         String value = String.format("%012d", number);
         int first = Integer.parseInt(value.substring(10, 12));
         int hundreds = Character.getNumericValue(value.charAt(9));
         int thousands = Integer.parseInt(value.substring(6, 9));
-        int millions = Integer.parseInt(value.substring(0, 6));
-        
+        int millions = Integer.parseInt(value.substring(3, 6));
+        int billions = Integer.parseInt(value.substring(0, 3));
 
-        
         Result result = Result.Builder.create()
                 .hundreds(hundreds)
                 .millions(millions)
                 .thousands(thousands)
+                .billions(billions)
                 .firstTwoDigits(first)
                 .build();
         return result;
@@ -92,6 +103,7 @@ public class Result {
         private int hundreds;
 
         private int firstTwoDigits;
+        private int billions;
 
         private Builder() {
         }
@@ -121,7 +133,12 @@ public class Result {
         }
 
         public Result build() {
-            return new Result(millions, thousands, hundreds, firstTwoDigits);
+            return new Result(billions, millions, thousands, hundreds, firstTwoDigits);
+        }
+
+        public Builder billions(int billions) {
+            this.billions = billions;
+            return this;
         }
 
     }

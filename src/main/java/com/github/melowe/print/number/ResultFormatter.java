@@ -42,6 +42,11 @@ class ResultFormatter {
 
         List<String> tokens = new ArrayList<>();
 
+        if(result.hasBillions()) {
+            tokens.add(format(result.getBillions()));
+            tokens.add("BILLION");
+        }
+        
         if (result.hasMillions()) {
             tokens.add(format(result.getMillions()));
             tokens.add("MILLION");
@@ -78,6 +83,8 @@ class ResultFormatter {
         
         String str = String.format("%03d", n);
         List<String> tokens = new ArrayList<>();
+
+        
         int hundreds = Character.getNumericValue(str.charAt(0));
 
         int o = Integer.parseInt(str.substring(1));
