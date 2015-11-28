@@ -29,7 +29,9 @@ public class NumberPrinterTest {
         assertThat(instance.print(0))
                 .isEqualToIgnoringCase("zero");
     }
+    
 
+    
     @Test
     public void printNineteen() {
         assertThat(instance.print(19))
@@ -46,6 +48,18 @@ public class NumberPrinterTest {
     public void print920() {
         assertThat(instance.print(920))
                 .isEqualToIgnoringCase("nine hundred and twenty");
+    }
+    
+    @Test
+    public void print910() {
+        assertThat(instance.print(910))
+                .isEqualToIgnoringCase("nine hundred and ten");
+    }
+    
+    @Test
+    public void print9910() {
+        assertThat(instance.print(9910))
+                .isEqualToIgnoringCase("nine thousand nine hundred and ten");
     }
     
     @Test
@@ -96,6 +110,22 @@ public class NumberPrinterTest {
 
     }
     
+    
+    @Test
+    public void print1000() {
+
+        assertThat(instance.print(1000))
+                .isEqualToIgnoringCase("one thousand");
+
+    }
+    
+    @Test
+    public void print11() {
+
+        assertThat(instance.print(11))
+                .isEqualToIgnoringCase("eleven");
+
+    }
     @Test
     public void print1019() {
 
@@ -111,6 +141,15 @@ public class NumberPrinterTest {
                 .isEqualToIgnoringCase("one hundred and one");
 
     }
+    
+    @Test
+    public void print119() {
+
+        assertThat(instance.print(119))
+                .isEqualToIgnoringCase("one hundred and nineteen");
+
+    }
+    
     @Test
     public void print999999999() {
         assertThat(instance.print(999999999))

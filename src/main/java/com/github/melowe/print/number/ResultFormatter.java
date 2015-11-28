@@ -50,13 +50,13 @@ class ResultFormatter {
 
         int t = result.getHundreds() * 100 + result.getFirstTwoDigits();
 
-        if (!result.hasHundreds() && !tokens.isEmpty()) {
+        if (t != 0 && !result.hasHundreds() && !tokens.isEmpty()) {
             tokens.add("AND");
         }
 
         tokens.add(format(t));
 
-        return String.join(" ", tokens);
+        return String.join(" ", tokens).trim();
 
     }
 
