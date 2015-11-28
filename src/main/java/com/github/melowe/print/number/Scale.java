@@ -31,8 +31,27 @@ public enum Scale {
     SEPTENDECILLION(54),
     OCTODECILLION(57),
     NOVEMDECILLION(60),
-    VIGINTILLION(63);
-   // CENTILLION(303);
+    VIGINTILLION(63),
+    UNVIGINTILLION(66),
+    DOVIGINTILLION(69),
+    TREVIGINTILLION(72),
+    QUATTUORVIGINTILLION(75),
+    QUINVIGINTILLION(78),
+    SEXVIGINTILLION(81),
+    SEPTENVIGINTILLION(84),
+    OCTOVIGINTILLION(87),
+    NOVEMVIGINTILLION(90),
+    TRIGINTILLION(93),
+    UNTRIGINTILLION(96),
+    DOTRIGINTILLION(99),
+    TRETRIGINTILLION(102),
+    QUATTUORTRIGINTILLION(105),
+    QUINTRIGINTILLION(108),
+    SEXTRIGINTILLION(111),
+    SEPTENTRIGINTILLION(114),
+    OCTOTRIGINTILLION(117),
+    NOVEMTRIGINTILLION(120);
+    // CENTILLION(303);
 
     private final int value;
 
@@ -52,10 +71,10 @@ public enum Scale {
     }
 
     protected static Map<Scale, Integer> toScaleMap(BigInteger number) {
-        
+
         int numberLength = 200;
-        if(number.toString().length() > numberLength) {
-            throw new UnsupportedOperationException("Scale exceeds 200 "+ number);
+        if (number.toString().length() > numberLength) {
+            throw new UnsupportedOperationException("Scale exceeds 200 " + number);
         }
 
         String value = String.format("%0200d", number);
@@ -74,12 +93,12 @@ public enum Scale {
                 .filter(s -> !multiples.containsKey(s))
                 .forEach(s -> {
                     int fromIndex = numberLength - (s.getValue() + 3);
-                    int toIndex = numberLength - s.getValue();                
+                    int toIndex = numberLength - s.getValue();
                     multiples.put(s, Integer.parseInt(value.substring(fromIndex, toIndex)));
                 });
-        
+
         return Collections.unmodifiableMap(multiples);
 
     }
-        
+
 }

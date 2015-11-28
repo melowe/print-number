@@ -61,25 +61,43 @@ public class ScaleTest {
         BigInteger billion = new BigInteger("1000000000000");
 
         Map<Scale, Integer> result = Scale.toScaleMap(billion.multiply(new BigInteger("1000")));
-        
+
         assertThat(result.get(Scale.QUADRILLION)).isEqualTo(1);
-        
+
         Stream.of(Scale.values())
                 .filter(s -> s != Scale.QUADRILLION).forEach(s -> {
-            assertThat(result.getOrDefault(s,0)).isEqualTo(0);
-        });
-        
-        
+                    assertThat(result.getOrDefault(s, 0)).isEqualTo(0);
+                });
+
     }
 
     @Test
     public void toScaleMapOneBillion() {
-        BigInteger n = new BigInteger("1000000000");
+        BigInteger n = BigInteger.TEN.pow(Scale.BILLION.getValue());
         Map<Scale, Integer> result = Scale.toScaleMap(n);
         assertThat(result.get(Scale.BILLION)).isEqualTo(1);
         Stream.of(Scale.values()).filter(s -> !Objects.equals(s, Scale.BILLION))
                 .forEach(s -> {
                     assertThat(result.get(s)).isEqualTo(0);
+                });
+
+    }
+
+    @Test
+    public void toScaleMapOneOfAllTheBigNumbers() {
+
+        Stream.of(Scale.values())
+                .filter(s -> s != Scale.ONE)
+                .filter(s -> s != Scale.TENS)
+                .forEach(s -> {
+                    BigInteger n = BigInteger.TEN.pow(s.getValue());
+                    Map<Scale, Integer> result = Scale.toScaleMap(n);
+                    assertThat(result.get(s)).isEqualTo(1);
+                    Stream.of(Scale.values())
+                            .filter(sc -> sc != s)
+                    .forEach(sc -> {
+                        assertThat(result.get(sc)).isEqualTo(0);
+                    });
                 });
 
 

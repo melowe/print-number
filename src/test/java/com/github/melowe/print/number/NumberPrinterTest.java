@@ -218,16 +218,24 @@ public class NumberPrinterTest {
     @Test
     public void printBigIntegerOneThousandBillion() {
  
-        assertThat(instance.printBigInteger(new BigInteger("1000000000000")))
+        assertThat(instance.printBigInteger(BigInteger.TEN.pow(Scale.TRILLION.getValue())))
                 .isEqualToIgnoringCase("one trillion");
 
     }
     
     @Test
     public void printBigIntegerQUADRILLION() {
-        BigInteger billion = new BigInteger("1000000000000");
-        assertThat(instance.printBigInteger(billion.multiply(new BigInteger("1000"))))
+
+        assertThat(instance.printBigInteger(BigInteger.TEN.pow(Scale.QUADRILLION.getValue())))
                 .isEqualToIgnoringCase("ONE QUADRILLION");
 
     }
+    
+    @Test
+    public void printBigIntegerOneHundredQUADRILLION() {
+        assertThat(instance.printBigInteger(BigInteger.TEN.pow(17)))
+                .isEqualToIgnoringCase("ONE HUNDRED QUADRILLION");
+
+    }
+    
 }
