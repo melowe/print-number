@@ -1,7 +1,9 @@
 package com.github.melowe.print.number;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +25,8 @@ class ResultFormatter {
         ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE;
     }
 
+    private static Map<Integer,String> executionCache = new HashMap<>();
+    
     private static final List<String> ZERO_TO_NINETEEN = Stream.concat(
             Stream.of(SingleDigit.values()),
             Stream.of(DoubleDigit.values())
@@ -61,6 +65,17 @@ class ResultFormatter {
     }
 
     private static String format(int n) {
+//        String str = executionCache.get(n);
+//        if(Objects.nonNull(str)) {
+//            return str;
+//        }
+
+        return doFormat(n);
+    }
+    
+    private static String doFormat(int n) {
+        
+        
         String str = String.format("%03d", n);
         List<String> tokens = new ArrayList<>();
         int hundreds = Character.getNumericValue(str.charAt(0));
@@ -91,7 +106,10 @@ class ResultFormatter {
             }
         }
 
-        return String.join(" ", tokens);
+        String result = String.join(" ", tokens);
+        //executionCache.put(n,result);
+        
+        return result;
     }
 
 }

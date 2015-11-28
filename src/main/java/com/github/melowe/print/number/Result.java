@@ -70,7 +70,9 @@ public class Result {
         int hundreds = Character.getNumericValue(value.charAt(9));
         int thousands = Integer.parseInt(value.substring(6, 9));
         int millions = Integer.parseInt(value.substring(0, 6));
+        
 
+        
         Result result = Result.Builder.create()
                 .hundreds(hundreds)
                 .millions(millions)

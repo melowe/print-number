@@ -118,6 +118,14 @@ public class NumberPrinterTest {
                 .isEqualToIgnoringCase("one thousand");
 
     }
+
+    @Test
+    public void print1001() {
+
+        assertThat(instance.print(1001))
+                .isEqualToIgnoringCase("one thousand and one");
+
+    }
     
     @Test
     public void print11() {
@@ -163,5 +171,20 @@ public class NumberPrinterTest {
                 .isEqualToIgnoringCase("seven thousand seven hundred and eighty two");
 
     }
+    
+    @Test
+    public void print1999999999() {
+        assertThat(instance.print(1999999999))
+                .isEqualToIgnoringCase("one hundred and ninety nine million nine hundred and ninety nine thousand nine hundred and ninety nine");
+
+    }
+    @Test
+    public void print1999999900() {
+        assertThat(instance.print(1999999900))
+                .isEqualToIgnoringCase("one hundred and ninety nine million nine hundred and ninety nine thousand nine hundred");
+
+    }
+
+    
 
 }
