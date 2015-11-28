@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 
 import java.util.stream.Collectors;
@@ -45,11 +44,13 @@ class ResultFormatter {
 
         List<String> tokens = new ArrayList<>();
 
-        List<Scale> ignoreScales = Arrays.asList(Scale.ONE, Scale.TENS,Scale.CENTILLION);
-
+        List<Scale> ignoreScales = Arrays.asList(Scale.ONE, Scale.TENS);
+       
+        
+        
         result.entrySet().stream()
                 .filter(e -> !ignoreScales.contains(e.getKey()))
-                .sorted((Entry<Scale, Integer> o1, Entry<Scale, Integer> o2) -> o2.getKey().compareTo(o1.getKey()))
+                .sorted((o1,o2) -> o2.getKey().compareTo(o1.getKey()))
                 .forEach((entry) -> {
 
                     Scale key = entry.getKey();
@@ -60,7 +61,7 @@ class ResultFormatter {
                     }
                 });
 
-        int hundreds = result.get(Scale.HUNDRED);
+
         int singleScale = result.get(Scale.ONE);
         int tens = result.get(Scale.TENS);
         int t = tens * 10 + singleScale;

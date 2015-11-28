@@ -1,6 +1,7 @@
 package com.github.melowe.print.number;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -30,8 +31,8 @@ public enum Scale {
     SEPTENDECILLION(54),
     OCTODECILLION(57),
     NOVEMDECILLION(60),
-    VIGINTILLION(63),
-    CENTILLION(303);
+    VIGINTILLION(63);
+   // CENTILLION(303);
 
     private final int value;
 
@@ -51,37 +52,34 @@ public enum Scale {
     }
 
     protected static Map<Scale, Integer> toScaleMap(BigInteger number) {
+        
+        int numberLength = 200;
+        if(number.toString().length() > numberLength) {
+            throw new UnsupportedOperationException("Scale exceeds 200 "+ number);
+        }
 
-        int numberLength = Scale.CENTILLION.getValue();
-
-        String value = String.format("%0" + numberLength + "d", number);
+        String value = String.format("%0200d", number);
 
         int first = Character.getNumericValue(value.charAt(numberLength - 1));
         int tens = Character.getNumericValue(value.charAt(numberLength - 2));
         int hundreds = Character.getNumericValue(value.charAt(numberLength - 3));
-        int thousands = Integer.parseInt(value.substring(numberLength - 6, numberLength - 3));
 
         Map<Scale, Integer> multiples = new EnumMap<>(Scale.class);
 
         multiples.put(Scale.ONE, first);
         multiples.put(Scale.TENS, tens);
         multiples.put(Scale.HUNDRED, hundreds);
-        multiples.put(Scale.THOUSAND, thousands);
 
         Stream.of(Scale.values())
                 .filter(s -> !multiples.containsKey(s))
-                .filter(s -> Scale.CENTILLION != s)
                 .forEach(s -> {
-
                     int fromIndex = numberLength - (s.getValue() + 3);
-                    int toIndex = numberLength - s.getValue();
-                    
-                    
+                    int toIndex = numberLength - s.getValue();                
                     multiples.put(s, Integer.parseInt(value.substring(fromIndex, toIndex)));
                 });
-
-        return multiples;
+        
+        return Collections.unmodifiableMap(multiples);
 
     }
-
+        
 }

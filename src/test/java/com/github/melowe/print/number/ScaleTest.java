@@ -73,12 +73,11 @@ public class ScaleTest {
     }
 
     @Test
-    public void toScaleMap() {
+    public void toScaleMapOneBillion() {
         BigInteger n = new BigInteger("1000000000");
         Map<Scale, Integer> result = Scale.toScaleMap(n);
         assertThat(result.get(Scale.BILLION)).isEqualTo(1);
         Stream.of(Scale.values()).filter(s -> !Objects.equals(s, Scale.BILLION))
-                .filter(s -> !Objects.equals(s, Scale.CENTILLION))
                 .forEach(s -> {
                     assertThat(result.get(s)).isEqualTo(0);
                 });
