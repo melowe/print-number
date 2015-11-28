@@ -1,21 +1,20 @@
 package com.github.melowe.print.number;
 
 import java.math.BigInteger;
+import java.util.Map;
 
 
 public interface NumberPrinter {
 
     default String printBigInteger(BigInteger num) {
-        Result result = Result.fromNumber(num);
-        return ResultFormatter.format(result);
+        Map<Scale,Integer> map = Scale.toScaleMap(num);
+        return ResultFormatter.format(map);
     }
     
     
     default String print(int num) {
-
-        
-        Result result = Result.fromNumber(num);
-        return ResultFormatter.format(result);
+        Map<Scale,Integer> map = Scale.toScaleMap(BigInteger.valueOf(num));
+        return ResultFormatter.format(map);
 
     }
 

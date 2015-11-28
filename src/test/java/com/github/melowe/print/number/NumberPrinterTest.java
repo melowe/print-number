@@ -223,10 +223,10 @@ public class NumberPrinterTest {
     }
     
     @Test
-    public void printBigIntegerOneThousandTrillion() {
+    public void printBigIntegerQUADRILLION() {
         BigInteger billion = new BigInteger("1000000000000");
         assertThat(instance.printBigInteger(billion.multiply(new BigInteger("1000"))))
-                .isEqualToIgnoringCase("one thousand trillion");
+                .isEqualToIgnoringCase("ONE QUADRILLION");
 
     }
 }
