@@ -86,14 +86,15 @@ public class ScaleTest {
     public void toScaleMapOneOfAllTheBigNumbers() {
 
         Stream.of(Scale.values())
-                .filter(s -> s != Scale.ONE)
-                .filter(s -> s != Scale.TENS)
+                .filter(s -> !Objects.equals(s, Scale.ONE))
+                .filter(s -> !Objects.equals(s, Scale.TENS))
+                .filter(s -> !Objects.equals(s, Scale.HUNDRED))
                 .forEach(s -> {
                     BigInteger n = BigInteger.TEN.pow(s.getValue());
                     Map<Scale, Integer> result = Scale.toScaleMap(n);
                     assertThat(result.get(s)).isEqualTo(1);
                     Stream.of(Scale.values())
-                            .filter(sc -> sc != s)
+                            .filter(sc -> !Objects.equals(sc, s))
                     .forEach(sc -> {
                         assertThat(result.get(sc)).isEqualTo(0);
                     });
@@ -102,4 +103,7 @@ public class ScaleTest {
 
     }
 
+    
+
+    
 }
