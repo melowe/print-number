@@ -58,9 +58,8 @@ public class ScaleTest {
 
     @Test
     public void toScaleMapBigIntegerOneThousandTrillion() {
-        BigInteger billion = new BigInteger("1000000000000");
 
-        Map<Scale, Integer> result = Scale.toScaleMap(billion.multiply(new BigInteger("1000")));
+        Map<Scale, Integer> result = Scale.toScaleMap(BigInteger.TEN.pow(Scale.QUADRILLION.getValue()));
 
         assertThat(result.get(Scale.QUADRILLION)).isEqualTo(1);
 

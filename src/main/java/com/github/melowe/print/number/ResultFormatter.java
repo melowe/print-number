@@ -5,6 +5,7 @@ import static com.github.melowe.print.number.Scale.ONE;
 import static com.github.melowe.print.number.Scale.TENS;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +42,27 @@ class ResultFormatter {
             .map(Enum::name)
             .collect(Collectors.toList());
 
+    protected static void validate(Map<Scale, Integer> result) {
+        
+        
+        boolean valid = result.entrySet().stream()
+                .filter(e -> Objects.nonNull(e.getValue()))
+                .filter(e -> e.getKey().ordinal() > HUNDRED.ordinal())
+                .allMatch(e -> e.getValue() < 1000) && 
+                IntStream.of(result.getOrDefault(ONE,0),result.getOrDefault(TENS,0),result.getOrDefault(HUNDRED,0))
+                .allMatch(v -> v < 10);
+        
+        if(!valid) {
+            throw new IllegalArgumentException();
+        }
+      
+        
+    }
+    
     protected static String format(Map<Scale, Integer> result) {
-
-        if (result.values().stream().allMatch(v -> v == 0)) {
+        validate(result);
+        
+        if (result.values().stream().allMatch(v -> Objects.equals(v, 0))) {
             return SingleDigit.ZERO.name();
         }
 
@@ -81,14 +100,20 @@ class ResultFormatter {
     }
 
     private static String doFormat(int n) {
-
+        
+        if(n > 999) {
+            throw new IllegalArgumentException("Can only format between 0 and 999");
+        }
+        
         String str = String.format("%03d", n);
         List<String> tokens = new ArrayList<>();
 
         int hundreds = Character.getNumericValue(str.charAt(0));
-
+        
         int o = Integer.parseInt(str.substring(1));
+        
 
+        
         if (hundreds != 0) {
             tokens.add(SingleDigit.values()[hundreds].name());
             tokens.add("HUNDRED");
