@@ -1,5 +1,7 @@
 package com.github.melowe.print.number;
 
+import static com.github.melowe.print.number.Scale.HUNDRED;
+import static com.github.melowe.print.number.Scale.TENS;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,12 +46,8 @@ class ResultFormatter {
 
         List<String> tokens = new ArrayList<>();
 
-        List<Scale> ignoreScales = Arrays.asList(Scale.ONE, Scale.TENS);
-       
-        
-        
         result.entrySet().stream()
-                .filter(e -> !ignoreScales.contains(e.getKey()))
+                .filter(e -> e.getKey().ordinal() > TENS.ordinal())
                 .sorted((o1,o2) -> o2.getKey().compareTo(o1.getKey()))
                 .forEach((entry) -> {
 
@@ -82,7 +80,7 @@ class ResultFormatter {
 //            return str;
 //        }
 
-        return doFormat(n);
+        return  executionCache.getOrDefault(n, doFormat(n));
     }
 
     private static String doFormat(int n) {
@@ -119,7 +117,7 @@ class ResultFormatter {
         }
 
         String result = String.join(" ", tokens);
-        //executionCache.put(n,result);
+        executionCache.put(n,result);
 
         return result;
     }
