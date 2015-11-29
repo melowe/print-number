@@ -3,7 +3,6 @@ package com.github.melowe.print.number;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -277,7 +276,7 @@ public class NumberPrinterTest {
                 .filter(s -> !Objects.equals(s, Scale.TENS))
                 .filter(s -> !Objects.equals(s, Scale.HUNDRED))
                 .map(s -> prefix + " "+ s.name())
-                .collect(Collectors.joining(" ")).concat(" NINE HUNDRED AND NINETY NINE");
+                .collect(Collectors.joining(" ")).concat(" ").concat(prefix);
         
         
         //TODO: Check of this expection is correct
