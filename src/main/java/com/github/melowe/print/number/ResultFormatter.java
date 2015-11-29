@@ -1,6 +1,7 @@
 package com.github.melowe.print.number;
 
 import static com.github.melowe.print.number.Scale.HUNDRED;
+import static com.github.melowe.print.number.Scale.ONE;
 import static com.github.melowe.print.number.Scale.TENS;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 class ResultFormatter {
@@ -29,7 +32,7 @@ class ResultFormatter {
         ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE;
     }
 
-    private static Map<Integer, String> executionCache = new HashMap<>();
+    private static final Map<Integer, String> EXECUTION_CACHE = new HashMap<>();
 
     private static final List<String> ZERO_TO_NINETEEN = Stream.concat(
             Stream.of(SingleDigit.values()),
@@ -44,43 +47,37 @@ class ResultFormatter {
             return SingleDigit.ZERO.name();
         }
 
-        List<String> tokens = new ArrayList<>();
-
-        result.entrySet().stream()
+        List<String> tokens = result.entrySet().stream()
                 .filter(e -> e.getKey().ordinal() > TENS.ordinal())
+                .filter(e -> Objects.nonNull(e.getKey()))
+                .filter(e -> Objects.nonNull(e.getValue()))
+                .filter(e -> !Objects.equals(e.getValue(), 0))
                 .sorted((o1,o2) -> o2.getKey().compareTo(o1.getKey()))
-                .forEach((entry) -> {
+                .flatMap(e -> Stream.of(format(e.getValue()),e.getKey().name()))
+                .collect(Collectors.toList());
 
-                    Scale key = entry.getKey();
-                    Integer value = entry.getValue();
-                    if (Objects.nonNull(value) && !Objects.equals(value, 0)) {
-                        tokens.add(format(value));
-                        tokens.add(key.name());
-                    }
-                });
-
-
+        List<String> lastTokens = new ArrayList();
+        
+        
+        
         int singleScale = result.get(Scale.ONE);
         int tens = result.get(Scale.TENS);
-        int t = tens * 10 + singleScale;
+        int t = singleScale + (tens * 10);
         
         if (t != 0 && (tens != 0 || singleScale != 0) && !tokens.isEmpty()) {
-            tokens.add("AND");
+            lastTokens.add("AND");
         }
         
-        tokens.add(format(t));
+        lastTokens.add(format(t));
         
-        return String.join(" ", tokens).trim();
+        List<String> allTokens = new ArrayList<>(tokens);
+        allTokens.addAll(lastTokens);
+        return String.join(" ", allTokens).trim();
     }
 
 
     private static String format(int n) {
-//        String str = executionCache.get(n);
-//        if(Objects.nonNull(str)) {
-//            return str;
-//        }
-
-        return  executionCache.getOrDefault(n, doFormat(n));
+        return  EXECUTION_CACHE.getOrDefault(n, doFormat(n));
     }
 
     private static String doFormat(int n) {
@@ -117,7 +114,7 @@ class ResultFormatter {
         }
 
         String result = String.join(" ", tokens);
-        executionCache.put(n,result);
+        EXECUTION_CACHE.put(n,result);
 
         return result;
     }
