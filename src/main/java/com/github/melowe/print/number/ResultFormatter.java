@@ -60,8 +60,8 @@ class ResultFormatter {
         
         
         
-        int singleScale = result.get(Scale.ONE);
-        int tens = result.get(Scale.TENS);
+        int singleScale = result.getOrDefault(Scale.ONE,0);
+        int tens = result.getOrDefault(Scale.TENS,0);
         int t = singleScale + (tens * 10);
         
         if (t != 0 && (tens != 0 || singleScale != 0) && !tokens.isEmpty()) {
