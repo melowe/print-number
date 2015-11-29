@@ -111,9 +111,7 @@ class ResultFormatter {
         int hundreds = Character.getNumericValue(str.charAt(0));
         
         int o = Integer.parseInt(str.substring(1));
-        
 
-        
         if (hundreds != 0) {
             tokens.add(SingleDigit.values()[hundreds].name());
             tokens.add("HUNDRED");

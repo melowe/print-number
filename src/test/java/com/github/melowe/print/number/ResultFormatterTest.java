@@ -102,4 +102,14 @@ public class ResultFormatterTest {
 
     }
     
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void formatUnsuporrtedScale() throws Exception {
+        
+        Map<Scale,Integer> scaleMap = new EnumMap<>(Scale.class);
+        scaleMap.put(Scale.values()[Scale.values().length - 1],1000);
+        
+        ResultFormatter.format(scaleMap);
+
+    }
 }
