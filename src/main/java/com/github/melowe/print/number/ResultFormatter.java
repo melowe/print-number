@@ -73,17 +73,12 @@ class ResultFormatter {
                 .collect(Collectors.toList());
 
         List<String> lastTokens = new ArrayList();
-        
-        
-        
         int singleScale = result.getOrDefault(Scale.ONE,0);
         int tens = result.getOrDefault(Scale.TENS,0);
         int t = singleScale + (tens * 10);
-        
         if (t != 0 && (tens != 0 || singleScale != 0) && !tokens.isEmpty()) {
             lastTokens.add("AND");
-        }
-        
+        }        
         lastTokens.add(format(t));
         
         List<String> allTokens = new ArrayList<>(tokens);

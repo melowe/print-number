@@ -4,6 +4,7 @@ package com.github.melowe.print.number;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -149,20 +150,13 @@ public final class Scale implements Comparable<Scale>{
         
 
         List<Scale> list = new ArrayList<>();
-        list.add(ONE);
-        list.add(TENS);
-        list.add(HUNDRED);
-        list.add(THOUSAND);
-        list.add(MILLION);
-        list.add(BILLION);
-        list.add(TRILLION);
-        list.add(QUADRILLION);
-        list.add(QUINTILLION);
-        list.add(SEXTILLION);
-        list.add(SEPTILLION);
-        list.add(NONILLION);
-        
+        list.addAll(
+            Arrays.asList(  ONE,TENS,HUNDRED,THOUSAND,MILLION,
+                            BILLION,TRILLION,QUADRILLION,
+                            QUINTILLION,SEXTILLION,SEPTILLION,NONILLION)
+        );
         int scaleValue = 33;
+       
         for(Illion i : Illion.values()) {
             list.add(new Scale(scaleValue, i.name(),list.size()));
             scaleValue = scaleValue + 3;

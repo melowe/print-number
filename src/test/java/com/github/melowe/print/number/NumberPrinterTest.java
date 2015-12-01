@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import static org.fest.assertions.Assertions.*;
+import org.fest.assertions.Condition;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +17,8 @@ import org.junit.Test;
 
 public class NumberPrinterTest {
 
+    static final String NINE_HUNDRED_AND_NINETY_NINE = "NINE HUNDRED AND NINETY NINE";
+    
     NumberPrinter instance;
 
     public NumberPrinterTest() {
@@ -251,7 +255,9 @@ public class NumberPrinterTest {
     @Test
     public void print999Googolplex() {
         assertThat(instance.printBigInteger(BigInteger.TEN.pow(Scale.valueOf("CENTILLION").getValue()).multiply(BigInteger.valueOf(999))))
-                .isEqualToIgnoringCase("NINE HUNDRED AND NINETY NINE CENTILLION");
+                .isEqualToIgnoringCase(NINE_HUNDRED_AND_NINETY_NINE
+                                            .concat(" ")
+                                            .concat("CENTILLION"));
 
     }
 
@@ -269,15 +275,16 @@ public class NumberPrinterTest {
         
         List<Scale> scales = Arrays.asList(Scale.values());
         Collections.reverse(scales);
-        String prefix = "NINE HUNDRED AND NINETY NINE";
-        
+
         String result = scales.stream()
                 .filter(s -> !Objects.equals(s, Scale.ONE))
                 .filter(s -> !Objects.equals(s, Scale.TENS))
                 .filter(s -> !Objects.equals(s, Scale.HUNDRED))
-                .map(s -> prefix + " "+ s.name())
-                .collect(Collectors.joining(" ")).concat(" ").concat(prefix);
-        
+                    .map(s -> NINE_HUNDRED_AND_NINETY_NINE + " "+ s.name())
+                        .collect(Collectors.joining(" "))
+                            .concat(" ")
+                            .concat(NINE_HUNDRED_AND_NINETY_NINE);
+
         
         //TODO: Check of this expection is correct
         assertThat(instance.printBigInteger(bigNumber))

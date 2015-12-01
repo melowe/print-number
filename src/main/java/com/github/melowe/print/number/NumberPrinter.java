@@ -11,13 +11,13 @@ public interface NumberPrinter {
         return ResultFormatter.format(map);
     }
     
-    
+              
     default String print(int num) {
         Map<Scale,Integer> map = Scale.toScaleMap(BigInteger.valueOf(num));
         return ResultFormatter.format(map);
 
     }
-
+      
     public static NumberPrinter create() {
         return new NumberPrinter() {};
     }
